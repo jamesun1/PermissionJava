@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.example.mapper.User2applicationMapper">
+
+
+	<select id="getPermissionList"
+		parameterType="com.example.model.User2application"
+		resultMap="resultMap">
+		SELECT ap.*, user2application.userinfoid AS userinfoid from
+		application ap left join user2application
+		on
+		user2application.applicationid=ap.applicationid
+		where
+		ap.menuinstanceparent is null
+		and
+		user2application.userinfoid=
+		#{userinfoid}
+	</select>
+
+	<resultMap type="com.example.vo.ApplicationVo" id="resultMap">
+
+		<result column="userinfoid" property="userinfoid" />
+		<result column="applicationid" property="applicationid" />
+		<result column="menuinstanceurl" property="menuinstanceurl" />
+		<result column="menuinstanceicon" property="menuinstanceicon" />
+		<result column="menuinstancesrc" property="menuinstancesrc" />
+		<result column="menuinstancename" property="menuinstancename" />
+		<result column="menuinstanceparent"
+			property="menuinstanceparent" />
+
+		<collection property="zishuju"
+			ofType="com.example.model.Application" select="selectStadail"
+			column="{applicationid=applicationid,userinfoid=userinfoid}" />
+
+	</resultMap>
+
+	<select id="selectStadail" parameterType="java.util.Map"
+		resultType="com.example.model.Application">
+		<!-- SELECT * from application where menuinstanceparent= #{applicationid} 
+			and applicationid=#{applicationid} -->
+		SELECT * from user2application left join application on
+
+		application.applicationid= user2application.applicationid
+		where
+		menuinstanceparent= #{applicationid}
+		and
+		user2application.userinfoid=#{userinfoid}
+	</select>
+
+</mapper>

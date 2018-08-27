@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.OrgMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.Org">
+    <constructor>
+      <idArg column="orgid" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="orgname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="orgparentid" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    orgid, orgname, orgparentid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from org
+    where orgid = #{orgid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from org
+    where orgid = #{orgid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.Org">
+    insert into org (orgid, orgname, orgparentid
+      )
+    values (#{orgid,jdbcType=VARCHAR}, #{orgname,jdbcType=VARCHAR}, #{orgparentid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.Org">
+    insert into org
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orgid != null">
+        orgid,
+      </if>
+      <if test="orgname != null">
+        orgname,
+      </if>
+      <if test="orgparentid != null">
+        orgparentid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orgid != null">
+        #{orgid,jdbcType=VARCHAR},
+      </if>
+      <if test="orgname != null">
+        #{orgname,jdbcType=VARCHAR},
+      </if>
+      <if test="orgparentid != null">
+        #{orgparentid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.Org">
+    update org
+    <set>
+      <if test="orgname != null">
+        orgname = #{orgname,jdbcType=VARCHAR},
+      </if>
+      <if test="orgparentid != null">
+        orgparentid = #{orgparentid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where orgid = #{orgid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.Org">
+    update org
+    set orgname = #{orgname,jdbcType=VARCHAR},
+      orgparentid = #{orgparentid,jdbcType=VARCHAR}
+    where orgid = #{orgid,jdbcType=VARCHAR}
+  </update>
+</mapper>
